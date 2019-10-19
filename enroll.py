@@ -65,6 +65,9 @@ def get_course_info():
 def enroll(course_url):
     driver.get(course_url)
     get_course_info()
+    tree= build_keyword_tree()
+    gen_key_list(tree)
+    
 
 def main():
     global config
