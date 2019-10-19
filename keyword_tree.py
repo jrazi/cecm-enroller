@@ -5,33 +5,37 @@ tree_shape = {
     },
     "ACRONYM": {
         "tag": "",
-        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "ACRONYM_LOWER": {
         "tag": "",
-        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_FL_LOWER": {
         "tag": "",
-        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_FL_UPPER": {
         "tag": "",
-        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON": {
         "tag": "",
-        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_CAPITALIZED": {
         "tag": "",
-        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_UPPER": {
         "tag": "",
-        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
+        "children": ["YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "YEAR": {
+        "tag": "",
+        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "NOTHING"]
+    },
+    "GEORGIAN_YEAR": {
         "tag": "",
         "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "NOTHING"]
     },
@@ -76,6 +80,8 @@ class KeywordTree:
         tree_shape["SEASON_CAPITALIZED"]["tag"] = self.course_info["season"].capitalize()
 
         tree_shape["YEAR"]["tag"] = self.course_info["year"]
+        tree_shape["GEORGIAN_YEAR"]["tag"] = str(int('13' + self.course_info["year"]) + 621)
+        
         tree_shape["SEMESTER_YEAR"]["tag"] = self.course_info["semester_year"]
         tree_shape["SEMESTER_NEXT_YEAR"]["tag"] = str(int(self.course_info["semester_year"]) + 1)
         tree_shape["SEMESTER_NO"]["tag"] = self.course_info["semester_no"]

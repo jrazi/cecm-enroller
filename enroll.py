@@ -83,7 +83,7 @@ def enroll(course_url):
             exit("Enrolled with success! Key: '" + enrollment_key + "'")
         else: print ("FAIL!")
     
-    print ("Failed to enroll :(")
+    print ("Failed to find enrollment key :(")
     
 
 def main():
