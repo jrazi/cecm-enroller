@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import sys
 import json 
-
+from keyword_tree import KeywordTree
 
 messages = {
     "INVALID_COMMAND": "Please enter the command in below format:\npython3 enroll.py -u [username] -p [password]"
@@ -53,20 +53,39 @@ def get_semester_no(year, season):
 def get_course_info():
     global course_info
 
-    course_name= course_info["course_name"] = driver.find_element_by_xpath('//h3[@class="coursename"]/a').text
-    course_name.split()
+    course_name = driver.find_element_by_xpath('//h3[@class="coursename"]/a').text
 
     course_info["course_words"] = [word for word in course_name.split() if word.isalpha()]
+    course_info["course_name"] = ' '.join(course_info["course_words"])
     course_info["first_letters"] = [word[0] for word in course_info["course_words"]]
-
+    course_info["acronym"] = ''.join(course_info["first_letters"])
     course_info["season"], course_info["year"]= driver.title.split()[-2].lower(), driver.title.split()[-1]
     course_info["semester"] = get_semester_no(course_info["year"], course_info["season"])
+
+    print(course_info)
+
+def try_to_enroll(enrollment_key):
+    print ("Trying to enroll with key '" + enrollment_key + "'")
+    enroll_field = driver.find_element_by_xpath('//input[@name="enrolpassword"]')
+    enroll_field.clear()
+    enroll_field.send_keys(enrollment_key)
+    enroll_field.send_keys(Keys.ENTER)
 
 def enroll(course_url):
     driver.get(course_url)
     get_course_info()
-    tree= build_keyword_tree()
-    gen_key_list(tree)
+    keyword_tree = KeywordTree(course_info)
+    key_list = keyword_tree.gen_key_list()
+
+    enroll_page_url = driver.current_url
+    for enrollment_key in key_list:
+        try_to_enroll(enrollment_key)
+        print(driver.current_url, enroll_page_url)
+        if driver.current_url != enroll_page_url:
+            exit("Enrolled with success! Key: '" + enrollment_key + "'")
+        else: print ("FAIL!")
+    
+    print ("Failed to enroll :(")
     
 
 def main():
