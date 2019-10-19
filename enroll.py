@@ -77,11 +77,9 @@ def enroll(course_url):
     keyword_tree = KeywordTree(course_info)
     key_list = keyword_tree.gen_key_list()
 
-    enroll_page_url = driver.current_url
     for enrollment_key in key_list:
         try_to_enroll(enrollment_key)
-        print(driver.current_url, enroll_page_url)
-        if driver.current_url != enroll_page_url:
+        if "cecm.ut.ac.ir/enrol" not in driver.current_url:
             exit("Enrolled with success! Key: '" + enrollment_key + "'")
         else: print ("FAIL!")
     
