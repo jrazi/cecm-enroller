@@ -87,36 +87,70 @@ class KeywordTree:
         tree_shape["SEMESTER_NO"]["tag"] = self.course_info["semester_no"]
 
     def __add_special_char_nodes(self, node):
-        node["children"] = [
-            {
-                "tag": "_",
-                "children": [],
-                "is_leaf": False
-            },
-            {
-                "tag": "-",
-                "children": [],
-                "is_leaf": False
-            },
-            {
-                "tag": "",
-                "children": [],
-                "is_leaf": False
-            }
-        ]
+        if node["special_char_type"] == "dash":
+            node["children"] = [
+                {
+                    "tag": "-",
+                    "special_char_type": "dash",
+                    "children": [],
+                    "is_leaf": False
+                },
+                {
+                    "tag": "",
+                    "special_char_type": "dash",
+                    "children": [],
+                    "is_leaf": False
+                }
+            ]
+        elif node["special_char_type"] == "underline":
+            node["children"] = [
+                {
+                    "tag": "_",
+                    "special_char_type": "underline",
+                    "children": [],
+                    "is_leaf": False
+                },
+                {
+                    "tag": "",
+                    "special_char_type": "underline",
+                    "children": [],
+                    "is_leaf": False
+                }
+            ]
+        elif node["special_char_type"] == "any":
+            node["children"] = [
+                {
+                    "tag": "-",
+                    "special_char_type": "dash",
+                    "children": [],
+                    "is_leaf": False
+                },
+                {
+                    "tag": "_",
+                    "special_char_type": "underline",
+                    "children": [],
+                    "is_leaf": False
+                },
+                {
+                    "tag": "",
+                    "special_char_type": "any",
+                    "children": [],
+                    "is_leaf": False
+                }
+            ]
 
     def __build_node(self, shape_node, node, depth= 0):
         if depth > 3: return
         for child in shape_node["children"]:
             if "leaf_mark" in tree_shape[child] and node["tag"] != "": continue
-            new_node = {"tag": tree_shape[child]["tag"], "children": [], "is_leaf": "leaf_mark" in tree_shape[child]}
+            new_node = {"tag": tree_shape[child]["tag"], "children": [], "special_char_type": node["special_char_type"], "is_leaf": "leaf_mark" in tree_shape[child]}
             node["children"].append(new_node)
             self.__add_special_char_nodes(new_node)
             for special_char_child in new_node["children"]:
                 self.__build_node(tree_shape[child], special_char_child, depth + 1)
 
     def __build_tree(self):
-        self.tree = {"tag": "", "children": [], "is_leaf": False}
+        self.tree = {"tag": "", "children": [], "special_char_type": "any", "is_leaf": False}
         shape_node = tree_shape["ROOT"]
         self.__build_node(shape_node, self.tree)
 
