@@ -1,9 +1,13 @@
 tree_shape = {
     "ROOT": {
         "tag": "",
-        "children": ["ACRONYM", "FULL_NAME"]
+        "children": ["ACRONYM", "ACRONYM_LOWER"]
     },
     "ACRONYM": {
+        "tag": "",
+        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "YEAR", "SEMESTER_YEAR", "NOTHING"]
+    },
+    "ACRONYM_LOWER": {
         "tag": "",
         "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
@@ -56,7 +60,8 @@ class KeywordTree:
         self.__build_keyword_tree()
 
     def __fill_tree_tags(self):
-        tree_shape["ACRONYM"]["tag"] = self.course_info["acronym"]
+        tree_shape["ACRONYM"]["tag"] = self.course_info["acronym"].upper()
+        tree_shape["ACRONYM_LOWER"]["tag"] = self.course_info["acronym"].lower()
     #    tree_shape["FULL_NAME"]["tag"] = self.course_info["course_name"].replace(" ", "")
 
         tree_shape["SEASON_FL_LOWER"]["tag"] = self.course_info["season"][0].lower()
