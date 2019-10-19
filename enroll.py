@@ -60,8 +60,9 @@ def get_course_info():
     course_info["first_letters"] = [word[0] for word in course_info["course_words"]]
     course_info["acronym"] = ''.join(course_info["first_letters"])
     course_info["season"], course_info["year"]= driver.title.split()[-2].lower(), driver.title.split()[-1]
-    course_info["semester"] = get_semester_no(course_info["year"], course_info["season"])
-
+    course_info["semester_no"] = '1' if course_info['season'] == 'fall' else '2' if course_info['season'] == 'spring' else '3' if course_info['season'] == 'summer' else '1'
+    course_info["semester_year"] = course_info['year'] if course_info['season'] == 'fall' else str(int(course_info['year']) - 1)
+    
     print(course_info)
 
 def try_to_enroll(enrollment_key):

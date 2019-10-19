@@ -5,33 +5,37 @@ tree_shape = {
     },
     "ACRONYM": {
         "tag": "",
-        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "YEAR", "SEMESTER", "NOTHING"]
-    },
-    "FULL_NAME": {
-        "tag": "",
-        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "YEAR", "SEMESTER", "NOTHING"]
+        "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_FL_LOWER": {
         "tag": "",
-        "children": ["SEMESTER", "YEAR", "NOTHING"]
+        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_FL_UPPER": {
         "tag": "",
-        "children": ["SEMESTER", "YEAR", "NOTHING"]
+        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON": {
         "tag": "",
-        "children": ["SEMESTER", "YEAR", "NOTHING"]
+        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "SEASON_UPPER": {
         "tag": "",
-        "children": ["SEMESTER", "YEAR", "NOTHING"]
+        "children": ["YEAR", "SEMESTER_YEAR", "NOTHING"]
     },
     "YEAR": {
         "tag": "",
         "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "NOTHING"]
     },
-    "SEMESTER": {
+    "SEMESTER_YEAR": {
+        "tag": "",
+        "children": ["SEMESTER_NO", "SEMESTER_NEXT_YEAR", "NOTHING"]
+    },
+    "SEMESTER_NEXT_YEAR": {
+        "tag": "",
+        "children": ["NOTHING"]
+    },
+    "SEMESTER_NO": {
         "tag": "",
         "children": ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "NOTHING"]
     },
@@ -53,7 +57,7 @@ class KeywordTree:
 
     def __fill_tree_tags(self):
         tree_shape["ACRONYM"]["tag"] = self.course_info["acronym"]
-        tree_shape["FULL_NAME"]["tag"] = self.course_info["course_name"].replace(" ", "")
+    #    tree_shape["FULL_NAME"]["tag"] = self.course_info["course_name"].replace(" ", "")
 
         tree_shape["SEASON_FL_LOWER"]["tag"] = self.course_info["season"][0].lower()
         tree_shape["SEASON_FL_UPPER"]["tag"] = self.course_info["season"][0].upper()
@@ -62,7 +66,9 @@ class KeywordTree:
         tree_shape["SEASON_UPPER"]["tag"] = self.course_info["season"].capitalize()
 
         tree_shape["YEAR"]["tag"] = self.course_info["year"]
-        tree_shape["SEMESTER"]["tag"] = self.course_info["semester"]
+        tree_shape["SEMESTER_YEAR"]["tag"] = self.course_info["semester_year"]
+        tree_shape["SEMESTER_NEXT_YEAR"]["tag"] = str(int(self.course_info["semester_year"]) + 1)
+        tree_shape["SEMESTER_NO"]["tag"] = self.course_info["semester_no"]
 
     def __add_special_char_nodes(self, node):
         node["children"] = [
