@@ -55,7 +55,7 @@ def get_course_info():
 
     course_name = driver.find_element_by_xpath('//h3[@class="coursename"]/a').text
 
-    course_info["course_words"] = [word for word in course_name.split() if word.isalpha()]
+    course_info["course_words"] = [word for word in course_name.split() if word.isalpha() and word[0].isupper()]
     course_info["course_name"] = ' '.join(course_info["course_words"])
     course_info["first_letters"] = [word[0] for word in course_info["course_words"]]
     course_info["acronym"] = ''.join(course_info["first_letters"])
