@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 import json 
 from keyword_tree import KeywordTree
+import re
 
 messages = {
     "INVALID_COMMAND": "Please enter the command in below format:\npython3 enroll.py -u [username] -p [password]"
@@ -74,14 +75,21 @@ def try_to_enroll(enrollment_key):
 def enroll(course_url):
     driver.get(course_url)
     get_course_info()
-    keyword_tree = KeywordTree(course_info)
-    key_list = keyword_tree.gen_key_list()
+    try_to_enroll("")
+    hint_text = driver.find_element_by_xpath('//div[@id="id_error_enrolpassword"]').text
+    first_letter = re.search("'(.)'", hint_text).group(1)
 
+    keyword_tree = KeywordTree(course_info)
+    key_list = list(filter(lambda keyword: keyword[0] == first_letter, keyword_tree.gen_key_list()))
+
+    print('first letter, key_list', first_letter, key_list)
     for enrollment_key in key_list:
         try_to_enroll(enrollment_key)
         if "cecm.ut.ac.ir/enrol" not in driver.current_url:
             exit("Enrolled with success! Key: '" + enrollment_key + "'")
-        else: print ("FAIL!")
+        else: 
+            print ("FAIL!")
+            
     
     print ("Failed to find enrollment key :(")
     

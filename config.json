@@ -1,4 +1,4 @@
 {
     "login_url": "https://auth3.ut.ac.ir:8443/cas/login?service=https%3A%2F%2Fcecm.ut.ac.ir%2Flogin%2Findex.php%3FauthCAS%3DCAS",
-    "course_url": "https://cecm.ut.ac.ir/enrol/index.php?id=2883"
+    "course_url": "https://cecm.ut.ac.ir/enrol/index.php?id=2827"
 }
