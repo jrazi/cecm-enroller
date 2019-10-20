@@ -79,7 +79,7 @@ def enroll(course_url):
     hint_text = driver.find_element_by_xpath('//div[@id="id_error_enrolpassword"]').text
     first_letter = re.search("'(.)'", hint_text).group(1)
 
-    keyword_tree = KeywordTree(course_info)
+    keyword_tree = KeywordTree(course_info, config["additional_keywords"])
     key_list = list(filter(lambda keyword: keyword[0] == first_letter, keyword_tree.gen_key_list()))
 
     print('first letter, key_list', first_letter, key_list)

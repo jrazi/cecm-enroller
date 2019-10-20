@@ -1,4 +1,9 @@
 {
     "login_url": "https://auth3.ut.ac.ir:8443/cas/login?service=https%3A%2F%2Fcecm.ut.ac.ir%2Flogin%2Findex.php%3FauthCAS%3DCAS",
-    "course_url": "https://cecm.ut.ac.ir/enrol/index.php?id=2827"
+    "course_url": "https://cecm.ut.ac.ir/enrol/index.php?id=2827",
+    "additional_keywords": [
+        {"keyword": "Eng", "order": 1, "is_last": false,  "capitalizable_letters": ["FIRST", "ALL"]},
+        {"keyword": "EN", "order": 1, "is_last": false, "capitalizable_letters": ["FIRST", "ALL"]},
+        {"keyword": "Math", "order": 2, "is_last": true, "capitalizable_letters": ["FIRST", "ALL"]}
+    ]
 }

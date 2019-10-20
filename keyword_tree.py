@@ -58,12 +58,23 @@ tree_shape = {
     }
 }
 
-  
+def keyword_values(key):
+    values = []
+    _keyword = key["keyword"]
+    if "FIRST" in key["capitalizable_letters"]:
+        values.append(_keyword.capitalize())
+    if "ALL" in key["capitalizable_letters"]:
+        values.append(_keyword.upper())
+    if "NONE" in key["capitalizable_letters"]:
+        values.append(_keyword.lower())
+    return values
+
 class KeywordTree:
 
-    def __init__(self, course_info):
+    def __init__(self, course_info, additional_keywords):
         self.tree = {}
         self.course_info = course_info
+        self.additional_keywords = additional_keywords if additional_keywords != None else []
         self.key_list = []
         self.__build_keyword_tree()
 
@@ -85,6 +96,25 @@ class KeywordTree:
         tree_shape["SEMESTER_YEAR"]["tag"] = self.course_info["semester_year"]
         tree_shape["SEMESTER_NEXT_YEAR"]["tag"] = str(int(self.course_info["semester_year"]) + 1)
         tree_shape["SEMESTER_NO"]["tag"] = self.course_info["semester_no"]
+
+        for key in self.additional_keywords:
+            all_keywords = keyword_values(key)
+
+            for keyword in all_keywords:
+                tree_shape[keyword] = {
+                    "tag": keyword,
+                    "children": [],
+                }
+                if key["order"] == 1:
+                    tree_shape["ROOT"]["children"].append(keyword)
+            
+                for possible_child in self.additional_keywords:
+                    if possible_child["order"] == key["order"]  + 1:
+                        tree_shape[keyword]["children"].extend(keyword_values(possible_child))
+
+                if key["is_last"]:
+                    tree_shape[keyword]["children"] = ["SEASON_FL_LOWER", "SEASON_FL_UPPER", "SEASON", "SEASON_UPPER", "SEASON_CAPITALIZED", "YEAR", "GEORGIAN_YEAR", "SEMESTER_YEAR", "NOTHING"]
+
 
     def __add_special_char_nodes(self, node):
         if node["special_char_type"] == "dash":
